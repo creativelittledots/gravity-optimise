@@ -10,6 +10,7 @@ This repo contains some helpful code to cleanup and make better use of Gravity F
   * Disabling auto formating line breaks
   * Allowing emails to run through another plugin such WP Better Emails
   * Allowing emails to run through WooCommerce Email Template
+* Adding filters for user information to dynamically populate fields
 * Nesting Block Fields
   * Ability to create Nested Blocks with a Block Title
   * Fields within the Block are nested such that: 
