@@ -13,8 +13,23 @@ This repo contains some helpful code to cleanup and make better use of Gravity F
 * Nesting Block Fields
   * Ability to create Nested Blocks with a Block Title
   * Fields within the Block are nested such that: 
+
+
+```html
+<li class="block">
+
+  <h3>Title</h3>
   
-  ```html
-  <li class="block"><h3>Title</h3><ul class="fields"><li class="field"></li></ul>
-  ```
+  <ul class="fields">
+  
+    <li class="field"></li>
+    
+    <li class="field"></li>
+    
+    <li class="field"></li>
+    
+  </ul>
+  
+</li>
+```
 
