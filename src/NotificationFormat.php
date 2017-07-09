@@ -79,7 +79,7 @@
 			} else if ( $type === 'text/html' ) {
 				
 				// Clean < and > around text links in WP 3.1
-				$body = $this->esc_textlinks( $body );
+				$body = preg_replace( '#<(https?://[^*]+)>#', '$1', $body )
 	
 				// Convert line breaks & make links clickable
 				$body = make_clickable( $body );
@@ -100,12 +100,36 @@
 			
 			if( $type === 'text/html' ) {
 				
-				$content = apply_filters( 'woocommerce_mail_content', $this->style_inline( $content ) );
+				$content = apply_filters( 'woocommerce_mail_content', $this->styleInline( $content ) );
 				
 			}
 
 			return $content;
 			
+		}
+		
+		/**
+		 * Apply inline styles to dynamic content.
+		 *
+		 * @param string|null $content
+		 * @return string
+		 */
+		public function styleInline( $content ) {
+			// make sure we only inline CSS for html emails
+			if ( class_exists( 'DOMDocument' ) ) {
+				ob_start();
+				wc_get_template( 'emails/email-styles.php' );
+				$css = apply_filters( 'woocommerce_email_styles', ob_get_clean() );
+				// apply CSS styles inline for picky email clients
+				try {
+					$emogrifier = new \Emogrifier( $content, $css );
+					$content    = $emogrifier->emogrify();
+				} catch ( \Exception $e ) {
+					$logger = wc_get_logger();
+					$logger->add( 'emogrifier', $e->getMessage() );
+				}
+			}
+			return $content;
 		}
 		
 	}
